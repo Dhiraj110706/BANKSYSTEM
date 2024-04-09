@@ -1,0 +1,673 @@
+import java.util.*;
+class BankSystem
+{
+
+    public static final String BLUE_COLOR = "\u001B[34m";
+	public static final String GREEN_COLOR = "\u001B[32m";
+	public static final String RESET_COLOR = "\u001B[0m";
+	public static final String YELLOW_COLOR = "\u001B[33m";
+	public static final String COREL_COLOR = "\u001B[38;5;209m";
+	public static final String RED_COLOR = "\u001B[31m";
+	public static final String ORANGE_COLOR = "\u001B[38;5;208m";
+	public static final String MAGENTA_COLOR = "\u001B[35m";
+	public static final String BEIGE_COLOR = "\u001B[38;5;187m";
+	public static final String CYAN_COLOR = "\u001B[36m";
+	public static final String BROWN_COLOR = "\u001B[38;5;130m";
+	public static void main(String[]args)
+	{
+        
+		Scanner sc = new Scanner(System.in);
+		System.out.println();
+        System.out.println(ORANGE_COLOR+"====================================");
+        System.out.println("---------- Welcome to Bank ---------");
+        System.out.println("====================================");
+        System.out.println("*Enter Details to open Bank Account*");
+        System.out.println("===================================="+RESET_COLOR);
+        System.out.println();
+		System.out.print("Enter No. Of Users => ");
+		int u = sc.nextInt();
+		Customer c[] = new Customer[u];
+		Customer U[] = new Customer[10000];
+		for(int i = 0 ; i<u ; i++)
+		{
+			System.out.println();
+			System.out.println(MAGENTA_COLOR+"=================================================");
+            System.out.println("Enter Details to open Bank Account of User-"+(i+1));
+            System.out.println("=================================================="+RESET_COLOR);
+			System.out.println();
+			c[i] = new Customer();
+			U[i] = c[i];
+		}
+		int choice = 0 ;
+		int ch = 0;
+		while(ch !=2)
+		{
+			System.out.println(BROWN_COLOR+"Select 1 For Any User Details");
+			System.out.println("Select 2 For Exit"+RESET_COLOR);
+			ch = sc.nextInt();
+			
+			switch(ch)
+			{
+				case 1 :
+				{
+					System.out.println();
+					System.out.println(COREL_COLOR+"------------------Enter Login Details----------------"+RESET_COLOR);
+					System.out.println();
+					System.out.print("Enter UserID => ");
+					String uname = sc.next();
+					sc.nextLine();
+					for(int i = 0 ; i<c.length;i++)
+					{
+						if(uname.equals(c[i].UID))
+						{
+							if(U[i].login())
+							{
+								while(choice != 7)
+								{
+									System.out.println();
+									System.out.println(YELLOW_COLOR+"Press 1 For Display All User Details => ");
+									System.out.println("Press 2 For Change Details => ");
+									System.out.println("Press 3 For Withdraw Money => ");
+									System.out.println("Press 4 For Deposit Money => ");
+									System.out.println("Press 5 For Take Loan => ");
+									System.out.println("Press 6 for FD => ");
+									System.out.println("Press 7 for Exit => ");
+									System.out.println();
+									System.out.println("================================================================");
+									System.out.println("Enter Your Choice => ");
+									System.out.println("================================================================"+RESET_COLOR);
+									choice = sc.nextInt();
+									System.out.println("Choice :"+choice);
+									System.out.println();
+									switch(choice)
+									{
+										case 1:
+										{
+											U[i].display();
+											break;
+										}
+										case 2:
+										{
+											U[i].change();
+											break;
+										}
+										case 3:
+										{
+											U[i].withdraw();
+											break;
+										}
+										case 4:
+										{
+											U[i].debit();
+											break;
+										}
+										case 5 :
+										{
+											U[i].loan();
+											break;
+										}
+										case 6:
+										{
+											U[i].fd();
+											break;
+										}
+						   
+									}
+								}
+							}
+							else
+							{
+								ch = 1 ;
+								break;
+							}
+						}
+						else
+						{
+							System.out.println(RED_COLOR+"!!!Entered UserID is Invalid!!!!"+RESET_COLOR);
+							System.out.println("Do You Want To Register Details ?");
+							System.out.println("Enter 1 For Yes \nEnter 2 For No");
+							int f = sc.nextInt();
+							if(f==1)
+							{
+								u++ ;
+								System.out.println(MAGENTA_COLOR+"=================================================");
+								System.out.println("Enter Details to open Bank Account of User-"+(i+1));
+								System.out.println("=================================================="+RESET_COLOR);
+								U[u-1] = new Customer();
+								break;
+							}else if(f==2)
+							{
+								System.out.println("Enter Valid UserID !!");
+								break;
+							}
+							else
+							{
+								System.out.println("!!! INVALID RESPONSE !!!");
+								System.exit(1);
+							}
+						}
+					}
+					break;
+				}
+				case 2 :
+				{
+					System.out.println("Thanks For Coming Our Bank ");
+					System.exit(1);
+				}
+			}
+			
+		}
+        sc.close();
+	}
+}
+class Customer
+{
+	public static final String RED_COLOR = "\u001B[31m";
+	public static final String BLUE_COLOR = "\u001B[34m";
+	public static final String GREEN_COLOR = "\u001B[32m";
+	public static final String CYAN_COLOR = "\u001B[36m";
+	public static final String MAGENTA_COLOR = "\u001B[35m";
+	public static final String COREL_COLOR = "\u001B[38;5;209m";
+	public static final String RESET_COLOR = "\u001B[0m";
+	int count = 0;
+	Scanner sc = new Scanner(System.in);
+    String FName ;
+    String SName;
+    String MName;
+    String Name ;
+    String DOB;
+    int date,month,year;
+    int age ;
+    String Gender;
+    String Mobile ="0";
+    String AID = "0";
+    String UID ;
+    String Password ;
+    int Balance;
+    double Loan;
+    double EMI ;
+    double FD ; 
+    double returndeposit ;
+	Customer()
+	{
+		count++;
+        System.out.print("First Name  => ");
+        FName = sc.next();
+        sc.nextLine();
+        System.out.print("Middle Name => ");
+        MName =sc.next();
+        sc.nextLine();
+        System.out.print("Surname     => ");
+        SName = sc.next();
+        sc.nextLine();
+        Name = FName +" "+ MName+" " + SName ;
+		System.out.println();
+        System.out.println("Press 1 For Male");
+        System.out.println("Press 2 For Female");
+        int g = sc.nextInt();
+        if(g==1)
+        {
+            Gender = "Male" ;
+        }else if(g==2)
+        {
+            Gender = "Female";
+        }else
+        {
+            System.out.println(RED_COLOR+"!!! Invalid Gender !!!");
+            System.out.println("Re-Enter all Data"+RESET_COLOR); 
+            System.exit(0);
+        }
+		System.out.println();
+        System.out.print("Birth Date  => ");
+        date =sc.nextInt();
+       
+        if(date <=0 || date >31)
+        {
+            System.out.println("!!! Invalid Date !!!"); 
+            System.out.println("Re-Enter all Data"); 
+            System.exit(0);
+        }
+
+        System.out.print("Birth Month => ");
+        month = sc.nextInt();
+        
+        if(month <= 0 || month >12)
+        {
+            System.out.println("!!! Invalid Month !!!"); 
+            System.out.println("Re-Enter all Data"); 
+            System.exit(0);
+        }
+        System.out.print("Birth Year  => ");
+        year = sc.nextInt();
+        DOB = date+"/"+month+"/"+year;
+        System.out.println(DOB);
+		System.out.println();
+        System.out.print("Age => ");
+        age = sc.nextInt();
+		boolean mob = true;
+        while(mob)
+        {
+			System.out.println();
+            System.out.print("Mobile No => ");
+            Mobile = sc.next();
+            sc.nextLine();
+            if(Mobile.length()==10)
+            {
+				for(int i =0 ;i<10;i++)
+				{
+					
+					if(Mobile.charAt(i)<'0' || Mobile.charAt(i)>'9')
+					{
+						System.out.println(RED_COLOR+"!!! Invalid Mobile Number !!!Only Digits are allowed in Mobile Number !!!"); 
+						System.out.println("Re-Enter all Data"+RESET_COLOR);
+						mob = true ;
+						break;						
+					}
+					else
+					{
+						mob = false ;
+					}
+
+				}
+				
+            }else
+            {
+                System.out.println(RED_COLOR+"!!! Enter 10 Digits !!!"); 
+                System.out.println("Re-Enter all Data"+RESET_COLOR); 
+            }
+        }
+		boolean Aadhar = true;
+        while(Aadhar)
+        {
+			System.out.println();
+            System.out.print("Aadhar No => ");
+            AID = sc.next();
+            sc.nextLine();
+            if(AID.length()==12)
+            {
+                for(int i =0 ;i<12;i++)
+                {
+                    if(AID.charAt(i)<'0' || AID.charAt(i)>'9')
+                    {
+                        System.out.println(RED_COLOR+"!!! Invalid Aadhar Number Only Digits are allowed in Aadhar Number !!!"); 
+                        System.out.println("Re-Enter all Data"+RESET_COLOR); 
+						Aadhar = true ;
+                        break;
+                    }
+					else
+					{
+						Aadhar = false ;
+					}
+                }
+            }else
+            {
+                System.out.println("!!! Enter 12 Digits !!!"); 
+                System.out.println("Re-Enter all Data"); 
+            }
+        }
+		System.out.println();
+		System.out.print("Enter Account Initail Balance => ");
+        Balance = sc.nextInt();
+        UID = FName+date+month ;
+        Password = SName+"@"+year;
+		System.out.println();
+        System.out.println(CYAN_COLOR+"Default User ID => "+UID);
+        System.out.println("Default Password => "+Password+RESET_COLOR);
+		System.out.println();
+		System.out.println("Customer "+count+"Details is taken ");
+		System.out.println();
+        
+    }
+	boolean flag ;
+	boolean login()
+	{
+		System.out.print("Enter Password => ");
+		String pwd = sc.next();
+		sc.nextLine();
+		if(pwd.equals(Password))
+		{
+			flag = true ;
+			System.out.println();
+			System.out.println(COREL_COLOR+"-----------------Login Suceessfully-----------------"+RESET_COLOR);
+			System.out.println();
+		}else
+		{
+			System.out.println(RED_COLOR+"-----------------WRONG PASSWORD-----------------"+RESET_COLOR);
+
+			flag = false ;
+		}
+		return flag;
+	}
+	
+	void display()
+    {   System.out.println();
+        System.out.println(COREL_COLOR+"************************************************");
+        System.out.println("Name          => "+Name);
+        System.out.println("Date Of Birth => "+DOB);
+        System.out.println("Gender        =>" +Gender);
+        System.out.println("Mobile        => "+Mobile);
+        System.out.println("UserID        => "+UID);
+        System.out.println("Balance       => "+Balance); 
+        System.out.println("Loan          => "+Loan);
+        System.out.println("EMI           => "+EMI);
+        System.out.println("************************************************2"+RESET_COLOR);     
+        System.out.println();
+    }
+	void change()
+    {
+        int choice = 1 ;
+        while(choice != 9)
+        {
+			System.out.println();
+            System.out.println(GREEN_COLOR+"Press 1 For Change Name");
+            System.out.println("Press 2 For Change Gender");
+            System.out.println("Press 3 For Change Date Of Birth");
+            System.out.println("Press 4 For Change Age");
+            System.out.println("Press 5 For Change Mobile No");
+            System.out.println("Press 6 For Change Aadhar No");
+            System.out.println("Press 7 For Change UserID");
+            System.out.println("Press 8 For Change Password");
+            System.out.println("Press 9 For Exit"+RESET_COLOR);
+            System.out.println();
+            System.out.println("================================================================");
+            System.out.println("Enter Your Choice => ");
+            System.out.println("================================================================");
+            choice = sc.nextInt();
+            System.out.println("Choice :"+choice);
+            switch (choice) 
+			{
+                case 1:
+                {
+                    System.out.print("Enter New First Name  => ");
+                    String fname = sc.next();
+                    sc.nextLine();
+                    System.out.print("Enter New Middle Name => ");
+                    String fmiddle = sc.next();
+                    sc.nextLine();
+                    System.out.print("Enter New Last Name   => ");
+                    String flast = sc.next();
+                    sc.nextLine();
+                    Name = fname+" "+fmiddle+" "+flast; 
+                    System.out.println("Updated Name => "+Name); 
+                    System.out.println();        
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println("Update  New Gender => ");
+                    System.out.println("Press 1 For Male");
+                    System.out.println("Press 2 For Female");
+                    int c = sc.nextInt();
+                    if(c == 1)
+                    {
+                        Gender = "Male" ;
+                    }else if(c == 2)
+                    {
+                        Gender = "Female" ;
+                    }
+                    System.out.println("Updated Gender => "+Gender);
+                    System.out.println();
+                    break;
+                }
+                case 3:
+                {
+                    System.out.print("Update Birth Date  => ");
+                    int d =sc.nextInt();
+                
+                    if(d <=0 || d >31)
+                    {
+                        System.out.println(RED_COLOR+"!!! Invalid Date !!!"); 
+                        System.out.println("Birth Date is not updated"+RESET_COLOR); 
+                    }
+                    else
+                    {
+                        date = d; 
+                    }
+
+                    System.out.print("Update Birth Month => ");
+                    int m = sc.nextInt();
+                    
+                    if(m <= 0 || m >12)
+                    {
+                        System.out.println(RED_COLOR+"!!! Invalid Month !!!"); 
+                        System.out.println("Birth month is not updated"+RESET_COLOR);  
+                    }
+                    else
+                    {
+                        month = m;
+                    }
+
+                    System.out.print("Update Birth Year  => ");
+                    year = sc.nextInt();
+                    DOB = date+"/"+month+"/"+year;
+                    System.out.println("Updated Birth Date => "+DOB);
+                    System.out.println();
+                    break ;
+
+                }
+                case 4:
+                {
+                    System.out.println();
+                    System.out.print("Update Age => ");
+                    int a = sc.nextInt();
+                    if(a <=0 || a >100)
+                    {
+                        System.out.println("!!! Invalid Age!!!"); 
+                        System.out.println("Age is not updated"); 
+                    }
+                    else
+                    {
+                        age = a;
+                    }
+                    System.out.println("Updated Age => "+age);
+                    System.out.println();
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println();
+                    System.out.print("Change Mobile No => ");
+                    String MNO = sc.next();
+                    sc.nextLine();
+                    if(MNO.length()==10)
+                    {
+                        for(int i =0 ;i<10;i++)
+                        {
+                            if(MNO.charAt(i)<'0' || MNO.charAt(i)>'9')
+                            {
+                                System.out.println(RED_COLOR+"!!! Invalid Mobile Number Only Digits are allowed in Mobile Number !!!"); 
+                                System.out.println("!!! Mobile Number is not updated !!!"+RESET_COLOR);
+                            }
+                            else if(MNO.charAt(0)==0)
+                            {
+                                System.out.println(RED_COLOR+"!!! Mobile number should not be started with 0 !!!"); 
+                                System.out.println("!!! Mobile Number is not updated!!!"+RESET_COLOR);
+                            }
+                        }
+                    }else
+                    {
+                        System.out.println(RED_COLOR+"!!! 10 Digits requored in Mobile No. !!!"); 
+                        System.out.println("!!! Mobile Number is not updated!!!"+RESET_COLOR);
+                    }
+                    System.out.println();
+                    break;
+                }
+                case 6:
+                {
+                    System.out.println();
+                    System.out.print("Update Aaadhar No => ");
+                    String Aadhar = sc.next();
+                    sc.nextLine();
+                    if(Aadhar.length()==12)
+                    {
+                        for(int i =0 ;i<12;i++)
+                        {
+                    if(Aadhar.charAt(i)<'0' || Aadhar.charAt(i)>'9')
+                            {
+                                System.out.println(RED_COLOR+"!!! Invalid Aadhar Number Only Digits are allowed in Mobile Number !!!"); 
+                                System.out.println("!!! Aadhar Number is not updated !!!"+RESET_COLOR);
+                            }
+                            else if(Aadhar.charAt(0)==0)
+                            {
+                                System.out.println(RED_COLOR+"!!! Aadhar number should not be started with 0 !!!"); 
+                                System.out.println("!!! Aadhar Number is not updated !!!"+RESET_COLOR);
+                            }
+                        }
+                    }else
+                    {
+                        System.out.println(RED_COLOR+"!!!  12 Digits required in Aadhar Number !!!"); 
+                        System.out.println("!!! Aadhar Number is not updated !!!"+RESET_COLOR);
+                    } 
+                    System.out.println();
+                    break;
+                }
+                case 7:
+                {
+                    System.out.println();
+                    System.out.print("Update UserID => ");
+                    UID = sc.next();
+                    sc.nextLine();
+                    System.out.println("Updated UserID => "+UID);
+                    System.out.println();
+                    break;
+                }
+                case 8:
+                {
+                    System.out.println();
+                    String pass = "1234";
+                    while(pass.length()<8)
+                    {
+                        System.out.print("Update Password => ");
+                        pass = sc.next();
+                        sc.nextLine();
+                        if(pass.length()<8)
+                        {
+                            System.out.println(RED_COLOR+"!!! Password should be atleast 8 characters long!!!"); 
+                            System.out.println("Re-Enter all Data"+RESET_COLOR); 
+                        }
+                        else
+                        {
+                            Password = pass;
+                        }
+                    }
+                    System.out.println("Updated Password => "+Password);
+                    System.out.println();
+                    break;
+                }
+                case 9:
+                {
+                    System.out.println(GREEN_COLOR+"Thanks for all updates!!!"+RESET_COLOR);
+                    break;
+                }
+                default :
+                {
+                    System.out.println(RED_COLOR+"No Updates Available Such Type"+RESET_COLOR);
+                    break;
+                }
+            }
+        }
+    }
+	void withdraw()
+    {
+		System.out.println();
+        System.out.println();
+        System.out.println("How much money do you want to withdraw");
+        int withdrawAmount = sc.nextInt();
+        if(withdrawAmount <= Balance)
+        {
+            Balance -= withdrawAmount;
+        }else
+        {
+            System.out.println(RED_COLOR+"================================================================");
+            System.out.println("Balance is less than Withdraw Amount");
+            System.out.println("================================================================"+RESET_COLOR);
+        }
+        System.out.println("Balance => "+Balance);
+        System.out.println();
+    }
+    void debit()
+    {
+		System.out.println();
+        System.out.println();
+        System.out.println("How much money do you want to debit");
+        int debitAmount = sc.nextInt();
+        Balance += debitAmount;
+        System.out.println("Balance => "+Balance);
+        System.out.println();
+    }
+    void loan()
+    {
+		System.out.println();
+        System.out.println();
+        System.out.print("How much money do you want to take loan => ");
+        int principle = sc.nextInt();
+        int loanyear;
+        int interestrate;
+        double interest;
+        double amount;
+        if(age >= 18)
+        {
+            System.out.println("Your Principle of loan is acceptable");
+            interestrate = 10;
+            System.out.println("Your interestrate is => "+interestrate);
+            System.out.print("Duration of Loan(in years) => ");
+            loanyear = sc.nextInt();
+            interest = principle * interestrate * loanyear / 100 ;
+            System.out.print("Your interest  is "+interest);
+            System.out.println();
+            amount = principle + interest;
+            System.out.println("Your Loan Amount is "+amount);
+            System.out.println();
+            System.out.println("Do you want this Loan ?");
+            System.out.println();
+            System.out.println("Press 1 for Yes");  
+            System.out.println("Press 2 for No");
+            int c =sc.nextInt();
+            if(c == 1)  
+            {
+                Loan =  amount ;
+                Balance += Balance ;
+                EMI = amount/(loanyear*12);
+                System.out.println();
+                System.out.println("Loan is accepted and EMI =>" +EMI );
+                System.out.println();
+            }
+            else{
+                System.out.println("Loan is not accepted");
+            }
+        }else
+        {
+            System.out.println(RED_COLOR+"================================================================");
+            System.out.println("!!! Loan is not accepted for Minors !!!");
+            System.out.println("================================================================"+RESET_COLOR);
+        }
+        System.out.println();
+    }
+    void fd()
+    {
+        System.out.println();
+        System.out.println("Howmuch Money do you want to put FD ?");
+        System.out.print("Enter Money => ");
+        int m = sc.nextInt();
+        if(m<Balance)
+        {
+            int r = 5 ;
+            System.out.println("Rate : "+r);
+            System.out.print("Duration ofe FD =>");
+            int fdyear = sc.nextInt();
+            double FD = m+(m*r*fdyear / (double)100);
+            System.out.println("You will get money after maturity => "+FD);
+            Balance -= m;
+
+        }
+        else
+        {
+            System.out.println(RED_COLOR+"You have lack of Balance"+RESET_COLOR);
+        }
+        System.out.println("Current Balance => "+Balance);
+
+    }
+    
+		
+	
+}
